@@ -6,6 +6,10 @@ sidebar_position: 2
 
 ## Generate ephemereal keypair
 
+```js
+let (public,private) = await medusa.generateKeyPair();
+```
+
 ## Asking Medusa to reencrypt for you
 
 To decrypt from Medusa you need to ask Medusa.
