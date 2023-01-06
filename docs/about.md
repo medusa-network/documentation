@@ -19,7 +19,7 @@ back re-encryption / decryption of data onchain.
 
 ![Overview](./../static/img/overview_medusa.png)
 
-# An example workflow
+## An example workflow
 
 Imagine Alice wants to sell a picture of her cat for 1 DAI on an eBay-like dApp. 
 
