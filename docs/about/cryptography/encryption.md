@@ -4,123 +4,17 @@ sidebar_position: 3
 
 # Encryption
 
-Medusa is 
-- Public Decryption is where the threshold network will reveal a key that allows anybody to decrypt a ciphertext, using the identity based paradigm. Think of it as if a trusted third party were decrypting messages that were encrypted to it. If this third party obeys to a smart contract, it's equivalent to say that it gives the smart contract the functionality to decrypt messages encrypted to it.
-- Private Decryption is where the threshold network's output is only decryptable by a given party with a specified private/public key pair
+Medusa's threshold network can manipulate ciphertexts in two ways: 
+- Private Decryption is where the threshold network's output is 
+only decryptable by a given party with a specified private/public 
+key pair
 
-## Public Decryption (IBE)
-
-### Intuition in blockchain context
-
-Think of it as if a trusted third party were decrypting messages that were encrypted to it. If this third party obeys to a smart contract, it's equivalent to say that it gives the smart contract the functionality to decrypt messages encrypted to it. Note however in practice, everybody can decrypt the ciphertexts *thanks to released material from the threshold network.* The plaintext is not hidden in the smart contract (as currently, nothing is hidden). 
-
-The network will only decrypt the message upon a certain condition. For example, "timed encryption" means the network will release the private key material only after a certain time. If the condition is based on the exchange of tokens, the network will only release the material after the exhange has taken place. Etc.
-
-**Usages:** Sealed bid auctions, timed encryptions, complex reward system (a complex condition will trigger the public decryption of the reward) etc
-
-**Performance:** 
-
-- For the network, it is similar to threshold BLS
-- For the decrypting an encrypted message client performs 1-2 pairings + XOR
-    - Some pre-computation can be done
-
-**Future:**
-
-Look into using IBE for everything (public/private encryption). See FAQ.
-
-### Protocol details
-
-This scheme is a direct application of the [Identity Based Encryption scheme](https://crypto.stanford.edu/~dabo/papers/bfibe.pdf) from Boneh et al. (section 4.2) to the threshold and BLS setting.
-
-For each instance of the protocol, we designate an $id$ and the corresponding public key. For example, for "timed encryption", the ID would be the round number $r$:
-
-$$
-Q_{id} = H_1(id) = H_1(r) \in \mathbb{G_2}
-$$
-
-**Encryption**: A client that wishes to encrypt a message $m \in \{0,1\}^l$ "towards" the ID will perform the following:
-
-1. Compute $G_{id} = e(P,Q_{id}) = e(P,H_1(id))$
-    - This can be pre-computed
-2. Choose a random $\sigma \in \{0,1\}^l$
-3. Set $r = H_3 (\sigma, m)$ where $H_3: \{0,1\}^* \rightarrow F_q$ is a secure hash function
-4. Output the ciphertext:
-
-$$
-C = \{U,V,W\} = \{ rG_1, \sigma \oplus H_2(r G_{id}), m \oplus H_4(\sigma)\}
-$$
-
-where $H_2: \mathbb{G_t} \rightarrow \{0,1\}^l$ and $H_4: \{0,1\}^l \rightarrow \{0,1\}^l$ are both secure hash functions.
-
-**Decryption:** 
-
-1. Once the threshold network decides it can decrypt the ciphertext, i.e. that the condition is validated, then it computes the BLS signature over the $id$ in a threshold way:
-    1. $\pi_{id} = sH(id) \in G_1$
-    2. It publishes $\pi_{id}$
-2. At this point, anybody can decrypt the ciphertext in the following way
-    1. Compute $\sigma = V \oplus H_2(e(U, \pi_{id}))$ 
-    2. Compute $M = W \oplus H_4(\sigma)$
-    3. Set $r = H_3(\sigma, m)$
-    4. Test that $U = rG_1$ - if not, reject.
-    5. M is the decrypted ciphertext
-
-**Completeness:**
-
-1. Computation of $\sigma$
-
-$$
-\sigma = V \oplus H_2(e(U,\pi_{id})) =\\ \sigma \oplus H_2(rG_{id}) \oplus H_2(e(rG_1,sH_1(id))) = \\ \sigma \oplus H_2(rse(G_1,H_1(id))) \oplus H_2(rse(G_1,H_1(id))) = \\\sigma
-$$
-
-1. Computation of  $M$:
-
-$$
-M = W \oplus H_4(\sigma) = M \oplus H_4(\sigma) \oplus H_4(\sigma)= M
-$$
-
-### Optimization: precomputation
-
-The decryption still requires one pre-computed pairing and one individual pairing per decryption. A pairing can be costly and thus, having a way to batch decrypt would be very beneficial to using this method at scale and on-chain.
-
-We introduce here roles to differentiate the computations: 
-
-- The **encrypter** (the persons encrypting the message**,**
-- The **helper (**the party precomputing expensive operations to help decryption)**,**
-- The **decrypter** (the party actually doing the decryption, can be onchain).
-
-**Signature Embedding**:
-
-The encrypter will prefix/suffix its message $m$ with a signature $\pi_M$ over $m$ and it encrypts the results:
-
-$$
-m' = Sig(m) \textrm{ } || \textrm{ }  m
-$$
-
-Once the helper has access to the signature related to the $id$, then it precomputes the following for all encrypted transactions for this epoch:
-
-$$
-\sigma_i = V \oplus H_2(e(U_i, \pi_{id}))
-$$
-
-and submits this to the decrypter.
-
-The decrypter actually decrypts all the messages with a simple XOR:
-
-$$
-m_i' = W_i \oplus \sigma_i 
-$$
-
-and verifies if the embedded signature is correct for each $m'$.
-If it is correct, it outputs the message $m_i$ . If it is not correct, it has to decide whether the encrypter or the helper has been misbehaving, i.e. either the signature is incorrect or the $\sigma_i$ given is incorrect. To do this he continues the decryption check:
-
-$$
-r_i = H_4(\sigma_i, m_i') \textrm{ } ^ \textrm{ } U_i =^? r_iG_1
-$$
-
-- If the check doesn't pass, that means the **helper** has been misbehaving. In this case, the **decrypter** has to run the full decryption algorithm (either onchain or as part of recovery protocol with additional delay)
-- If the check pass, that means the **encrypter** has inserted an invalid signature into its message and in this case, the decryption should be discarded.
-
-In the case of a honest helper, then he can try to decrypt all the ciphertext himself before, and only include ciphertext that leads to valid signatures and reject the ones that are not. The right incentives will bias the behavior towards the honest one.
+- Public Decryption (NOT YET DEPLOYED) is where the threshold network will reveal a key that allows anybody to decrypt a
+ciphertext, using the identity based paradigm. Think of it as if
+a trusted third party were decrypting messages that were encrypted 
+to it. If this third party obeys to a smart contract, it's
+equivalent to say that it gives the smart contract the
+functionality to decrypt messages encrypted to it.
 
 ## Private Decryption
 
@@ -266,7 +160,134 @@ $$
 
 The recipient can compute $-usG_2$ because he knows $P = sG_2$ and his own private key $u$.
 
-# Research/Protocol Questions
+## Public Decryption (IBE)
+
+### Intuition in blockchain context
+
+Think of it as if a trusted third party were decrypting messages that were encrypted to it. If this third party obeys to a smart contract, it's equivalent to say that it gives the smart contract the functionality to decrypt messages encrypted to it. Note however in practice, everybody can decrypt the ciphertexts *thanks to released material from the threshold network.* The plaintext is not hidden in the smart contract (as currently, nothing is hidden). 
+
+The network will only decrypt the message upon a certain condition. For example, "timed encryption" means the network will release the private key material only after a certain time. If the condition is based on the exchange of tokens, the network will only release the material after the exhange has taken place. Etc.
+
+**Usages:** Sealed bid auctions, timed encryptions, complex reward system (a complex condition will trigger the public decryption of the reward) etc
+
+**Performance:** 
+
+- For the network, it is similar to threshold BLS
+- For the decrypting an encrypted message client performs 1-2 pairings + XOR
+    - Some pre-computation can be done
+
+**Future:**
+
+Look into using IBE for everything (public/private encryption). See FAQ.
+
+### Protocol details
+
+This scheme is a direct application of the [Identity Based Encryption scheme](https://crypto.stanford.edu/~dabo/papers/bfibe.pdf) from Boneh et al. (section 4.2) to the threshold and BLS setting.
+
+For each instance of the protocol, we designate an $id$ and the corresponding public key. For example, for "timed encryption", the ID would be the round number $r$:
+
+$$
+Q_{id} = H_1(id) = H_1(r) \in \mathbb{G_2}
+$$
+
+**Encryption**: A client that wishes to encrypt a message $m \in \{0,1\}^l$ "towards" the ID will perform the following:
+
+1. Compute $G_{id} = e(P,Q_{id}) = e(P,H_1(id))$
+    - This can be pre-computed
+2. Choose a random $\sigma \in \{0,1\}^l$
+3. Set $r = H_3 (\sigma, m)$ where $H_3: \{0,1\}^* \rightarrow F_q$ is a secure hash function
+4. Output the ciphertext:
+
+$$
+C = \{U,V,W\} = \{ rG_1, \sigma \oplus H_2(r G_{id}), m \oplus H_4(\sigma)\}
+$$
+
+where $H_2: \mathbb{G_t} \rightarrow \{0,1\}^l$ and $H_4: \{0,1\}^l \rightarrow \{0,1\}^l$ are both secure hash functions.
+
+**Decryption:** 
+
+1. Once the threshold network decides it can decrypt the ciphertext, i.e. that the condition is validated, then it computes the BLS signature over the $id$ in a threshold way:
+    1. $\pi_{id} = sH(id) \in G_1$
+    2. It publishes $\pi_{id}$
+2. At this point, anybody can decrypt the ciphertext in the following way
+    1. Compute $\sigma = V \oplus H_2(e(U, \pi_{id}))$ 
+    2. Compute $M = W \oplus H_4(\sigma)$
+    3. Set $r = H_3(\sigma, m)$
+    4. Test that $U = rG_1$ - if not, reject.
+    5. M is the decrypted ciphertext
+
+**Completeness:**
+
+1. Computation of $\sigma$
+
+$$
+\begin{gather*}
+    \sigma = V \oplus H_2(e(U,\pi_{id})) =\\ \sigma \oplus H_2(rG_{id}) \oplus H_2(e(rG_1,sH_1(id))) = \\ \sigma \oplus H_2(rse(G_1,H_1(id))) \oplus H_2(rse(G_1,H_1(id))) = \\\sigma
+\end{gather*}
+$$
+
+1. Computation of  $M$:
+
+$$
+M = W \oplus H_4(\sigma) = M \oplus H_4(\sigma) \oplus H_4(\sigma)= M
+$$
+
+### Optimization: precomputation
+
+The decryption still requires one pre-computed pairing and one individual pairing per decryption. A pairing can be costly and thus, having a way to batch decrypt would be very beneficial to using this method at scale and on-chain.
+
+We introduce here roles to differentiate the computations: 
+
+- The **encrypter** (the persons encrypting the message**,**
+- The **helper (**the party precomputing expensive operations to help decryption)**,**
+- The **decrypter** (the party actually doing the decryption, can be onchain).
+
+**Signature Embedding**:
+
+The encrypter will prefix/suffix its message $m$ with a signature $\pi_M$ over $m$ and it encrypts the results:
+
+$$
+m' = Sig(m) \textrm{ } || \textrm{ }  m
+$$
+
+Once the helper has access to the signature related to the $id$, then it precomputes the following for all encrypted transactions for this epoch:
+
+$$
+\sigma_i = V \oplus H_2(e(U_i, \pi_{id}))
+$$
+
+and submits this to the decrypter.
+
+The decrypter actually decrypts all the messages with a simple XOR:
+
+$$
+m_i' = W_i \oplus \sigma_i 
+$$
+
+and verifies if the embedded signature is correct for each $m'$.
+If it is correct, it outputs the message $m_i$ . If it is not correct, it has to decide whether the encrypter or the helper has been misbehaving, i.e. either the signature is incorrect or the $\sigma_i$ given is incorrect. To do this he continues the decryption check:
+
+$$
+r_i = H_4(\sigma_i, m_i') \textrm{ } ^ \textrm{ } U_i =^? r_iG_1
+$$
+
+- If the check doesn't pass, that means the **helper** has been misbehaving. In this case, the **decrypter** has to run the full decryption algorithm (either onchain or as part of recovery protocol with additional delay)
+- If the check pass, that means the **encrypter** has inserted an invalid signature into its message and in this case, the decryption should be discarded.
+
+In the case of a honest helper, then he can try to decrypt all the ciphertext himself before, and only include ciphertext that leads to valid signatures and reject the ones that are not. The right incentives will bias the behavior towards the honest one.
+
+
+## FAQ
+
+- Why not using proxy re-encryption techniques with a single node ?
+    - It is assumed the recipient and the proxy are not colluding, one of them is honest. By decentralizing the proxy, we ensure that the proxy is honest.
+- In private decryption, why are encryption done on $G_2$ ?
+    - Using naive ElGamal encryption, it's either we put the public keys on $G_1$ but then the randomness signatures have to be on $G_2$ and therefore they're bigger. Or we put public keys on $G_2$ but then ciphertext are on $G_2$: it's a tradeoff. We can play with both.
+- Why don't we use IBE for everything ? (public and private decryption)
+    - WE CAN ! Maybe we should ! Questions for private decryption is of integration: how do someone proves its identity, what is the identity based on etc.
+    - Need more literature review on this - don't know enough atm
+
+## Research/Protocol Questions
 
 1. Free Riding problem: how do incentivize nodes to DO something, and not just gaining money without actually not running any software.
 2. In private decryption:
@@ -280,19 +301,8 @@ The recipient can compute $-usG_2$ because he knows $P = sG_2$ and his own priva
 4. Do we need receiver privacy ?  This is likely to be tackled at the protocol level though.
 5. Get a solid ground on the security of using El Gamal with type 3 bilinear maps without isomorphism between G1 and G2 (i.e. encryption only uses one or the other) , so under XDH setting → can we get cca there ?
 
-# FAQ
 
-- Why not using proxy re-encryption techniques with a single node ?
-    - It is assumed the recipient and the proxy are not colluding, one of them is honest. By decentralizing the proxy, we ensure that the proxy is honest.
-- In private decryption, why are encryption done on $G_2$ ?
-    - Using naive ElGamal encryption, it's either we put the public keys on $G_1$ but then the randomness signatures have to be on $G_2$ and therefore they're bigger. Or we put public keys on $G_2$ but then ciphertext are on $G_2$: it's a tradeoff. We can play with both.
-- Why don't we use IBE for everything ? (public and private decryption)
-    - WE CAN ! Maybe we should ! Questions for private decryption is of integration: how do someone proves its identity, what is the identity based on etc.
-    - Need more literature review on this - don't know enough atm
-- Why are you putting the milkmaid as background ?
-    - Because we're cooking something good 😋
-
-# References
+## References
 
 **Re-encryption:**
 
