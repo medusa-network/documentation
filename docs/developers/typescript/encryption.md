@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Encryption to Medusa
@@ -32,8 +32,15 @@ attacker could submit the same ciphertext and ask to decrypt for himself.
 ## Notifying Medusa
 
 Now you need to notify Medusa about the `cipherkey`. This part is application specific
-but let's illustrate with an example of a contract associating a price to each ciphertext 
-(think like a web3 eBay).
-```solidity
+but let's illustrate with the example dApp shown in [previous sections](./example).
 
+Let's assume you have the contract code instantiated in Typescript
+```typescript
+const ebayContract
 ```
+then one submits the ciphertext the following way:
+```typescript
+await ebayContract.submitEntry(cipherkey, 1eth);
+```
+
+This will generate an event on Medusa's network notifying it of this new ciphertext.
