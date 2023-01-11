@@ -57,6 +57,7 @@ The workflow looks like the following:
 
 1. **Authorize a public key to be a reader**: This must be done by the admin of the contract. The public key given is not a Ethereum address, it is a specific Medusa public key (on a different curve, BN254 to be precise) that must be generated before.
 2. **Submit Ciphertext:** The admin or anyone with the WRITER role can submit a ciphertext. The ACL contract actually calls the oracle smart contract inside that emits an event with the ciphertext in it. The oracle contract also assigns an unique ciphertext_id to this ciphertext so it can be referred easily afterwards. 
+    * **Important**: A ciphertext is _tied_ to both (a) the user generating the ciphertext and (b) the smart contract address where it submits it.
 3. **Request Reencryption**: This can be called by anyone which has the READER role onchain. This ACL contract actually calls the oracle contract that submits a reencryption event and assigns a specific id to the reencryption request. This ID is necessary for the reader to track the reencrypted cipher at the next stage. The oracle contract saves the address of the ACL contract with this request id.
 4. **Medusa nodes reencrypt ciphertext:** The Medusa nodes perform the following:
     - Each picks up the reencryption request,
