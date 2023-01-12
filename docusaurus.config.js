@@ -52,17 +52,18 @@ const config = {
         type: 'text/css',
         integrity: 'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
         crossorigin: 'anonymous',
-    }, ],
+    },],
     themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+        /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
-        navbar: {
-            title: 'Medusa',
-            logo: {
-                alt: 'medusa logo',
-                src: 'img/medusa-logo.svg',
-            },
-            items: [{
+            navbar: {
+                title: 'Medusa',
+                logo: {
+                    alt: 'medusa logo',
+                    src: 'img/medusa-logo.svg',
+                    href: 'https://medusanet.xyz',
+                },
+                items: [{
                     type: 'doc',
                     docId: 'developers',
                     position: 'left',
@@ -79,33 +80,33 @@ const config = {
                     label: 'GitHub',
                     position: 'right',
                 },
-            ],
-        },
-        footer: {
-            style: 'dark',
-            links: [{
+                ],
+            },
+            footer: {
+                style: 'dark',
+                links: [{
                     title: 'Community',
                     items: [{
                         label: 'Discord',
                         href: 'https://discordapp.com/invite/docusaurus',
-                    }, ],
+                    },],
                 },
                 {
                     title: 'More',
                     items: [{
                         label: 'Cryptonet',
                         href: 'https://cryptonet.org',
-                    }, ],
+                    },],
                 },
-            ],
-            copyright: `Copyright © ${new Date().getFullYear()} Medusa, built with Docusaurus.`,
-        },
-        prism: {
-            theme: lightCodeTheme,
-            darkTheme: darkCodeTheme,
-            additionalLanguages: ['solidity'],
-        },
-    }),
+                ],
+                copyright: `Copyright © ${new Date().getFullYear()} Medusa, built with Docusaurus.`,
+            },
+            prism: {
+                theme: lightCodeTheme,
+                darkTheme: darkCodeTheme,
+                additionalLanguages: ['solidity'],
+            },
+        }),
 };
 
 module.exports = config;
