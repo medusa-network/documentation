@@ -20,6 +20,7 @@ This call returns two values:
 * cipherkey represents the key, in an encrypted form, needed to decrypt the blob
 
 Only the latter needs to be submitted onchain !
+The encrypted blob can be put on IPFS or anywhere where the user can easily download it!
 
 :::info Preventing replay attacks
 
@@ -40,7 +41,7 @@ const ebayContract
 ```
 then one submits the ciphertext the following way:
 ```typescript
-await ebayContract.submitEntry(cipherkey, 1eth);
+const cipherID = await ebayContract.submitEntry(cipherkey, 1eth);
 ```
 
-This will generate an event on Medusa's network notifying it of this new ciphertext.
+This generates an event on the oracle contract thereby notifying Medusa's network of this new ciphertext.
