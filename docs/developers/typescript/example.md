@@ -23,7 +23,7 @@ This is a very simple contract but insecure !
 :::
 
 ```solidity
-contract OnlyFiles is IEncryptionClient {
+contract deBay is IEncryptionClient {
     /// the address of the Medusa oracle 
     IOracle public oracle;
     /// mapping recording the price of each item referenced by its cipher ID

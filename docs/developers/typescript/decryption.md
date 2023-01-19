@@ -34,32 +34,30 @@ const { private, public } = await medusa.generateKeypair();
 
 ## Asking Medusa to reencrypt for you
 
-To decrypt, you have to pass through the dApp you are building. Remember that a 
-ciphertext is tied to the smart contract it has been submitted to, so only the
-same smart contract can ask for reencryption.
+To decrypt, you have to pass through the dApp you are building; the smart contract that originally submits
+a ciphertext is the only account that can request reencryption of that ciphertext.
 
-Taking back on our example dApp, this could look like:
+For our example dApp, this would look like:
 ```typescript
-const options = {value: ethers.utils.parseEther("1.0")};
-const requestID = await ebayContract.buyEntry(cipherID, public.toEvm(), options);
+const price = await debayContract.itemToPrice(cipherId);
+const requestID = await debayContract.buyEntry(cipherID, public.toEvm(), { value: price });
 ```
-TODO: check options
+The `requestID` is a unique identifier of this specific request.
 
-Note the 1eth sending: if you don't pay enough, the smart contract is not gonna call
-`oracle.requestReencryption()` and thus Medusa is not gonna do the work !
-
-The `requestID` is an unique identifier of this specific request.
+Note the `{ value: price }` parameter: This follows from the access control policy that you have defined in your smart contract.
+If a user does not pay the sufficient price for the item, the smart contract will not call `oracle.requestReencryption()`
+and thus Medusa will not do the work!
 
 ## Waiting for reencryption event
 
-Medusa is gonna emit an event with the ciphertext reencrypted to the public key you
-advertised.
-Listening for events is quite dependent on the framework you uses. You can look at 
-our main application how it is done [here](https://github.com/medusa-network/medusa-app/blob/4a6e75e71489e97e9a08d3b0fc313b6fc2f32344/src/pages/index.tsx#LL44-L52).
+Medusa will emit an event with the ciphertext reencrypted to the public key you advertised.
+
+Listening for events is quite dependent on the framework you use. Here is an example using React and [wagmi](https://wagmi.sh/)
+from our [demo application](https://github.com/medusa-network/medusa-app/blob/d5fe9a6bf7e4bef7785a58d05f0b21474c69ddcf/src/components/EventsFetcher.tsx#L28-L104)
 
 ## Decryption 
 
-We now assume that you have caught up the event `EntryDecryption(requestID, ciphertext)`.
+We now assume that you have received the event `EntryDecryption(requestID, ciphertext)`.
 Now it's time to decrypt!
 ```typescript
 const decryptedBytes = await medusa.decrypt(ciphertext, blob)
@@ -67,4 +65,4 @@ const decryptedBytes = await medusa.decrypt(ciphertext, blob)
 
 Remember blob is the part of the ciphertext which can be stored anywhere, on IPFS for example.
 
-That's it !
+That's it!
