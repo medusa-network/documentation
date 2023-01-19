@@ -22,13 +22,13 @@ functionality to decrypt messages encrypted to it.
 
 This mode uses basic El Gamal encryption where (1) a client encrypts a message to the network, then (2) the network can decrypt it to a particular recipient according to some conditions. 
 
-In comparison with the previous section, this is useful when we want that the plaintext is only revealed to the intended recipient.
+In comparison with the previous section, this is useful when we want the plaintext **only** to be revealed to the intended recipient.
 
 **Use cases:** data management policies (see [Calypso](https://eprint.iacr.org/2018/209.pdf)), private API access, the whole set of "proxy re-encryption" use cases (like distributed encrypted file storage).
 
 ### Protocols Description
 
-To decrypt the nodes will each generate a partial decryption share. There are two ways to aggregate the shares:
+To decrypt, the nodes will each generate a partial decryption share. There are two ways to aggregate the shares:
 
 1. **Local Decryption:**  the nodes send the partial decryption shares directly to recipient which will aggregate them locally and decrypt locally
     1. **Practical Consideration:** The client needs to receive  on a private channel and aggregate at least t shares.The first requirement may be hard to achieve (general connectivity between any two points on the internet is not granted). The latter one can quickly become a problem as soon as we want to grow the network size, for security reason. This tends to trap us in the "security vs usability" false dichotomy.
@@ -284,7 +284,7 @@ In the case of a honest helper, then he can try to decrypt all the ciphertext hi
 - In private decryption, why are encryption done on $G_2$ ?
     - Using naive ElGamal encryption, it's either we put the public keys on $G_1$ but then the randomness signatures have to be on $G_2$ and therefore they're bigger. Or we put public keys on $G_2$ but then ciphertext are on $G_2$: it's a tradeoff. We can play with both.
 - Why don't we use IBE for everything ? (public and private decryption)
-    - WE CAN ! Maybe we should ! Questions for private decryption is of integration: how do someone proves its identity, what is the identity based on etc.
+    - WE CAN! Maybe we should! Questions for private decryption is of integration: how do someone proves its identity, what is the identity based on etc.
     - Need more literature review on this - don't know enough atm
 
 ## Research/Protocol Questions
