@@ -18,7 +18,7 @@ user that paid.
 
 :::warning DO NOT USE IN PRODUCTION
 
-This is a very simple contract but insecure !
+This is a very simple contract but insecure!
 
 :::
 

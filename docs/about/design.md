@@ -62,7 +62,7 @@ The workflow looks like the following:
 4. **Medusa nodes reencrypt ciphertext:** The Medusa nodes perform the following:
     - Each picks up the reencryption request,
     - Each checks if there is an associated ciphertext event onchain with the same cipher_id
-    - Each checks that **both event come from the same contract** ! This is important to guarantee that only the same application can issue decryption request for a ciphertext it came from. There is also a cryptographic guarantee that ties one ciphertext to an address so there is no replay attacks possible.
+    - Each checks that **both event come from the same contract**! This is important to guarantee that only the same application can issue decryption request for a ciphertext it came from. There is also a cryptographic guarantee that ties one ciphertext to an address so there is no replay attacks possible.
     - Each will compute their local reencryption share - see the cryptographic [reference](https://www.notion.so/Cryptographic-Protocols-Specs-2d1b453bc082481492bb6d4dec5d7ac1)s for more details and broadcast this on the gossiping network.
     - Once there are enough shares gathered on the gossiping network, nodes will submit the reconstructed reencrypted ciphertext onchain to the oracle contract.
 5. **Emits events with reencrypted ciphertext:** The oracle contract checks that the submitted reencryption comes from a valid request, and if so, calls a callback on the address saved at the stage 3. The ACL contract issues an event with the reencrypted ciphertext inside.

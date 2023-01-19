@@ -19,7 +19,7 @@ This call returns two values:
 * `encryptedBlob` represents the final ciphertext
 * `encryptedCipherkey` represents the key, in an encrypted form, needed to decrypt the blob
 
-Only the latter needs to be submitted onchain !
+Only the latter needs to be submitted onchain!
 The encrypted blob can be put on IPFS or anywhere where the user can easily download it!
 
 :::info Preventing replay attacks

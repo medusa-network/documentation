@@ -29,7 +29,7 @@ decrypt all the previous items he already decrypted.
 If you want to have more control over the key management, you can use
 ```typescript
 const { private, public } = await medusa.generateKeypair();
-
+```
 :::
 
 ## Asking Medusa to reencrypt for you
@@ -44,9 +44,12 @@ const requestID = await debayContract.buyEntry(cipherID, public.toEvm(), { value
 ```
 The `requestID` is a unique identifier of this specific request.
 
+:::info Access Control Policy
+
 Note the `{ value: price }` parameter: This follows from the access control policy that you have defined in your smart contract.
 If a user does not pay the sufficient price for the item, the smart contract will not call `oracle.requestReencryption()`
 and thus Medusa will not do the work!
+:::
 
 ## Waiting for reencryption event
 

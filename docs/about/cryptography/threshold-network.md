@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Threshold Network
 
-*Note: The first sections are meant to be an introduction to how threshold networks work. Ff you want to read directly the DKG specs Medusa implement, skip to the last [section](#dkg-spec) of this page*.
+*Note: The first sections are meant to be an introduction to how threshold networks work. If you want to read the DKG specs Medusa implements, skip to the last [section](#dkg-spec) of this page*.
 
 The purpose of the setup phase is to create a collective private, and public key pair shared among $n$ participants. This is done through a $t$-of-$n$ [Distributed Key Generation (DKG)](https://en.wikipedia.org/wiki/Distributed_key_generation) process at the end of which each of the $n$ participants obtains a copy of the **collective public key**, together with a **private key share** of the **collective private key**. The key shares are computed such that no individual node knows the entire collective private key.
 
@@ -70,7 +70,7 @@ participants don't commit to the polynomial beforehand as in the
 ### Neji DKG
 
 In Medusa, we rely on a smart contract to do the communication and we also use it
-for doing some verifications. Specifically, we employ the [Neji's DKG version](https://onlinelibrary.wiley.com/doi/abs/10.1002/sec.1651) that makes use of the computation capabilities of the smart contract.
+for doing some verifications. Specifically, we employ [Neji's DKG version](https://onlinelibrary.wiley.com/doi/abs/10.1002/sec.1651) that makes use of the computation capabilities of the smart contract.
 
 Specfically, it enables us to _skip_ the justification phase by having the contract
 directly verify onchain if a complaint is valid or not.
