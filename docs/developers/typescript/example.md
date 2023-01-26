@@ -45,8 +45,8 @@ contract deBay is IEncryptionClient {
     /// the Medusa network to reencrypt the given cipher ID with the given public key.
     /// This public key is generated on the client side (TS) and is most often ephemereal.
     function buyEntry(uint256 cipherId, G1Point calldata buyerPublicKey) external payable returns (uint256) {
-        uint256 price = listings[cipherId];
-        if (msg.value < listing.price) {
+        uint256 price = itemToPrice[cipherId];
+        if (msg.value < price) {
             revert InsufficentFunds();
         }
         uint256 requestId = oracle.requestReencryption(cipherId, buyerPublicKey);
