@@ -6,11 +6,20 @@ sidebar_position: 2
 
 Here is a simplified version of the interface, enough to define the ABI to communicate with it:
 
+:::caution Deprecation notice: `bytes _link` parameter
+
+A placeholder value for the `bytes _link` parameter referenced below must be included when
+submitting ciphertext to the Oracles on Hyperspace and Arbitrum Goerli.
+
+You can use `bytes(0)` as a suitable value. This parameter will be removed in the next deployment of the EncryptionOracle contracts.
+
+:::
+
 ```solidity
 interface IEncryptionOracle {
     /// @notice submit a ciphertext and has been created by the encryptor address.
     /// The ciphertext proof is checked and if correct, will be signalled to Medusa.
-    function submitCiphertext(Ciphertext calldata _cipher, address _encryptor) external returns (uint256);
+    function submitCiphertext(Ciphertext calldata _cipher, bytes _link, address _encryptor) external returns (uint256);
     /// @notice requests the Medusa nodes to reencrypt the ciphertext denoted by _cipherId
     /// to the publickey given.
     function requestReencryption(uint256 _cipherId, G1Point calldata _publickey) external payable returns (uint256);
