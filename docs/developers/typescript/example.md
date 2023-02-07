@@ -36,7 +36,7 @@ contract deBay is IEncryptionClient {
         Ciphertext calldata cipher,
         uint256 price,
     ) external returns (uint256) {
-        uint256 cipherId = oracle.submitCiphertext(cipher, bytes(0), msg.sender);
+        uint256 cipherId = oracle.submitCiphertext(cipher, bytes(""), msg.sender);
         itemToPrice[cipherId] = price;
         return cipherId;
     }

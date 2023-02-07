@@ -88,7 +88,7 @@ const config = {
                     title: 'Community',
                     items: [{
                         label: 'Discord',
-                        href: 'https://discord.gg/cryptonet',
+                        href: 'https://discord.gg/mGjVUwsVtJ',
                     },],
                 },
                 {
