@@ -11,7 +11,7 @@ Here is a simplified version of the interface, enough to define the ABI to commu
 A placeholder value for the `bytes _link` parameter referenced below must be included when
 submitting ciphertext to the Oracles on Hyperspace and Arbitrum Goerli.
 
-You can use `bytes(0)` as a suitable value. This parameter will be removed in the next deployment of the EncryptionOracle contracts.
+You can use `bytes("")` as a suitable value. This parameter will be removed in the next deployment of the EncryptionOracle contracts.
 
 :::
 
