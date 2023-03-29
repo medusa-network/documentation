@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 /**
  * Any CSS included here will be global. The classic template
  * bundles Infima by default. Infima is a CSS framework designed to
@@ -6,25 +7,143 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-color-primary: #0c113a; /* Primary dark blue */
+  --ifm-color-primary-dark: #05092a;
+  --ifm-color-primary-darker: #040720;
+  --ifm-color-primary-darkest: #020416;
+  --ifm-color-primary-light: #1e265d;
+  --ifm-color-primary-lighter: #2f3a80;
+  --ifm-color-primary-lightest: #4150a4;
+
+  --ifm-color-accent: #e74524; /* Secondary burnt orange */
+  --ifm-color-accent-dark: #c43b1f;
+  --ifm-color-accent-darker: #a1301a;
+  --ifm-color-accent-darkest: #7d2615;
+  --ifm-color-accent-light: #ea6d4f;
+  --ifm-color-accent-lighter: #ed957a;
+  --ifm-color-accent-lightest: #f0bda5;
+
+  --ifm-color-text: #f5f5f5; /* Off-white text color */
+  --ifm-code-font-size: 90%; /*95%;*/
+  --ifm-font-family-base: 'Open Sans';
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+/* [data-theme='dark'] { */
+/*   --ifm-color-primary: #25c2a0; */
+/*   --ifm-color-primary-dark: #21af90; */
+/*   --ifm-color-primary-darker: #1fa588; */
+/*   --ifm-color-primary-darkest: #1a8870; */
+/*   --ifm-color-primary-light: #29d5b0; */
+/*   --ifm-color-primary-lighter: #32d8b4; */
+/*   --ifm-color-primary-lightest: #4fddbf; */
+/*   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3); */
+/* } */
+
+html[data-theme='dark'] {
+  --ifm-background-color: var(--ifm-color-primary);
 }
+
+body {
+  background-color: var(--ifm-color-primary);
+}
+
+article {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (max-width: 996px) {
+  :root {
+    --ifm-font-size-base: 18px;
+  }
+  article header h1 {
+    font-size: 1.5rem !important;
+  }
+  .hero .hero__title {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (min-width: 997px) {
+  :root {
+    --ifm-font-size-base: 17px;
+  }
+  article header h1 {
+    font-size: 2rem !important;
+  }
+}
+
+.navbar__logo img {
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.navbar {
+  background-color: var(--ifm-color-primary);
+  border-bottom: 1px solid var(--ifm-color-text);
+}
+/* Add a bottom border to the header */
+header {
+  border-bottom: 1px solid var(--ifm-color-text);
+}
+
+/* Header Dropdown Menu */
+.dropdown__link {
+  font-size: inherit;
+}
+
+/* Add a top border to the footer */
+footer {
+  border-top: 1px solid var(--ifm-color-text);
+}
+
+.navbar__link--active, .navbar__link:hover, .navbar__title:hover, .footer__link-item {
+  color: var(--ifm-color-accent-light);
+}
+
+.footer__link-item:hover {
+    color: var(--ifm-color-text)
+}
+
+.footer {
+  background-color: var(--ifm-color-primary);
+}
+
+h1, p, li, table {
+  color: var(--ifm-color-text);
+}
+
+a, .menu__link {
+  color: var(--ifm-color-text);
+}
+
+.markdown a, .pagination-nav__sublabel {
+  color: var(--ifm-color-accent-light);
+}
+
+a:hover, .menu__link:hover {
+  color: var(--ifm-color-accent-dark);
+}
+
+.menu__caret:before {
+  filter: invert(48%) sepia(91%) saturate(3334%) hue-rotate(7deg) brightness(98%) contrast(88%);
+}
+
+.markdown strong {
+  color: var(--ifm-color-accent);
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--ifm-color-accent-dark);
+}
+
+.table-of-contents__link {
+  color: var(--ifm-color-text);
+}
+
+.table-of-contents__link:hover {
+  color: var(--ifm-color-accent-dark);
+}
+
