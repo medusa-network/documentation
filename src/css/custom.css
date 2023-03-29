@@ -40,12 +40,14 @@
 /*   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3); */
 /* } */
 
-html[data-theme='dark'] {
-  --ifm-background-color: var(--ifm-color-primary);
+html[data-theme='dark'], body {
+  --ifm-background-color: var(--ifm-color-primary-darkest);
 }
 
-body {
-  background-color: var(--ifm-color-primary);
+nav.menu {
+  background-color: var(--ifm-color-primary-darker);
+  border-right: 1px solid var(--ifm-color-text);
+
 }
 
 article {
@@ -81,7 +83,7 @@ article {
 }
 
 .navbar {
-  background-color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-primary-darker);
   border-bottom: 1px solid var(--ifm-color-text);
 }
 /* Add a bottom border to the header */
@@ -108,7 +110,7 @@ footer {
 }
 
 .footer {
-  background-color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-primary-darker);
 }
 
 h1, p, li, table {
