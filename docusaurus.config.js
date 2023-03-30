@@ -58,6 +58,12 @@ const config = {
       src: '/js/custom.js',
       async: true,
     },
+    {
+      src: 'https://plausible.io/js/plausible.js',
+      async: true,
+      defer: true,
+      'data-domain': 'docs.medusanet.xyz',
+    },
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
