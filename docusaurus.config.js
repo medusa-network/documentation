@@ -59,9 +59,10 @@ const config = {
       async: true,
     },
     {
-      src: 'https://plausible.io/js/plausible.js',
+      src: '/stats/js/script.js',
       async: true,
       defer: true,
+      'data-api': '/stats/api/event',
       'data-domain': 'docs.medusanet.xyz',
     },
   ],
