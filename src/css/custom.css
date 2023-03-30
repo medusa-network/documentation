@@ -77,6 +77,10 @@ article {
   }
 }
 
+.navbar__logo {
+  height: 4rem;
+}
+
 .navbar__logo img {
   border-radius: 50%;
   padding: 4px;
@@ -85,6 +89,8 @@ article {
 .navbar {
   background-color: var(--ifm-color-primary-darker);
   border-bottom: 1px solid var(--ifm-color-text);
+
+  min-height: 5rem;
 }
 /* Add a bottom border to the header */
 header {
@@ -101,7 +107,7 @@ footer {
   border-top: 1px solid var(--ifm-color-text);
 }
 
-.navbar__link--active, .navbar__link:hover, .navbar__title:hover, .footer__link-item {
+.navbar__link--active, .navbar__link:hover, .navbar__title:hover, .navbar__brand:hover, .footer__link-item {
   color: var(--ifm-color-accent-light);
 }
 
