@@ -45,9 +45,8 @@ html[data-theme='dark'], body {
 }
 
 nav.menu {
-  background-color: var(--ifm-color-primary-darker);
-  border-right: 1px solid var(--ifm-color-text);
-
+  background-color: var(--ifm-color-primary-darkest);
+  /* border-right: 1px solid var(--ifm-color-text); */
 }
 
 article {
@@ -87,8 +86,8 @@ article {
 }
 
 .navbar {
-  background-color: var(--ifm-color-primary-darker);
-  border-bottom: 1px solid var(--ifm-color-text);
+  background-color: var(--ifm-color-primary-darkest);
+  /* border-bottom: 1px solid var(--ifm-color-text); */
 
   min-height: 5rem;
 }
@@ -104,7 +103,7 @@ header {
 
 /* Add a top border to the footer */
 footer {
-  border-top: 1px solid var(--ifm-color-text);
+  /* border-top: 1px solid var(--ifm-color-text); */
 }
 
 .navbar__link--active, .navbar__link:hover, .navbar__title:hover, .navbar__brand:hover, .footer__link-item {
@@ -116,7 +115,7 @@ footer {
 }
 
 .footer {
-  background-color: var(--ifm-color-primary-darker);
+  background-color: var(--ifm-color-primary-darkest);
 }
 
 h1, p, li, table {
