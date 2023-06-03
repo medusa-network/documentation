@@ -35,6 +35,8 @@ contract MyApplication is MedusaClient {
 ```
 
 Medusa will call the `processOracleResult` function giving the relevant request id and the result. 
+The request ID comes from the actual request made to the oracle contract by the user earlier. See the [relevant documentation](https://docs.medusanet.xyz/developers/contracts/medusa).
+
 The dApp is free to handle the reencrypted ciphertext in any way it wants.
 Generally we recommend to emit an event so the client can simply listen off the 
 events from the dApp to get back the reencryption.
